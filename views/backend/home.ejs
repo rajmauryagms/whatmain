@@ -1,0 +1,154 @@
+<% layout('layout') -%> 
+<div class="main-panel">
+    <div class="container">
+        <div class="panel-header bg-primary-gradient">
+            <div class="page-inner py-5">
+                <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                    <!-- <div>
+                        <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+                        <h5 class="text-white op-7 mb-2">Welcome to dashboard <%= username %> </h5>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-inner mt--5">
+            <div class="row mt--2">
+                <div class="col-md-12">
+                    <div class="card full-height">
+                        <div class="card-body">
+                            <div class="main-section">
+                                <div class="dashbord">
+                                    <div class="icon-section">
+                                        <i class="fa fa-whatsapp" aria-hidden="true"></i><br>
+                                        <small>Devices</small>
+                                        <p><b id="use-devices">0</b> of <b id="devices">5</b></p>
+                                    </div>
+                                    <div class="detail-section">
+                                        <a href="/configuration">More Info</a>
+                                    </div>
+                                </div>
+                                <div class="dashbord dashbord-green">
+                                    <div class="icon-section">
+                                        <i class="fa fa-send-o" aria-hidden="true"></i><br>
+                                        <small>Message Quota</small>
+                                        <p><b id="quota">0</b></p>
+                                    </div>
+                                    <div class="detail-section">
+                                        <a href="#">More Info </a>
+                                    </div>
+                                </div>
+                                <div class="dashbord dashbord-orange">
+                                    <div class="icon-section">
+                                        <i class="fa fa-envelope-o" aria-hidden="true"></i><br>
+                                        <small>Outbox</small>
+                                        <p><b id="message-outbox">0</b></p>
+                                    </div>
+                                    <div class="detail-section">
+                                        <a href="/message">More Info </a>
+                                    </div>
+                                </div>
+                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card full-height">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+                                <img src="https://i.pinimg.com/564x/50/50/b1/5050b105d88f9ab58c9b5f18a0959adc.jpg" width="200" />
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+                                <h1>Welcome to WhatsApp Api Nodedemy V.2.0.0</h1>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+                                <h1><%= username %> <b> ( <%= role %> )</b></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container-fluid">
+            <nav class="pull-left">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Help
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Licenses
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="copyright ml-auto">
+                2022, made with <i class="fa fa-heart heart text-danger"></i> by <a target="_blank" href="https://www.youtube.com/c/HeirroGames/videos">Nodedemy</a>
+            </div>				
+        </div>
+    </footer>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        devices();
+        function devices(){
+            $.ajax({
+                type : 'GET',
+                async: false,
+                url  : '/home/get-devices',
+                dataType :'json',
+                success:function(response){
+                 $("#devices").html(response[0]['devices']);
+                }
+            });
+        }
+        quota()
+        function quota(){
+            $.ajax({
+                type : 'GET',
+                async: false,
+                url  : '/home/get-quota',
+                dataType :'json',
+                success:function(response){
+                 $("#quota").html(response[0]['quota']);
+                }
+            });
+        }
+        outbox();
+        function outbox(){
+            $.ajax({
+                type : 'GET',
+                async: false,
+                url  : '/home/count-message-outbox',
+                dataType :'json',
+                success:function(response){
+                 $("#message-outbox").html(response[0]['outbox']);
+                }
+            });
+        }
+        getUseDevices();
+        function getUseDevices(){
+            $.ajax({
+                type : 'GET',
+                async: false,
+                url  : '/home/get-use-devices',
+                dataType :'json',
+                success:function(response){
+                 $("#use-devices").html(response.devices);
+                }
+            });
+        }
+        
+    });
+    </script>
